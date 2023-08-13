@@ -13,9 +13,14 @@ git clone https://github.com/asadrizv/social-media-analyser
 ```
 
 
-2. Start the API server:
+2. Start the API server locally:
 ```
 make run
+```
+
+3. To start the API server in a Dockerized manner:
+```
+docker compose up
 ```
 
 
