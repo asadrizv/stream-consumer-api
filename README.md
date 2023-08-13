@@ -23,6 +23,11 @@ make run
 docker compose up
 ```
 
+4. To run unit tests
+````shell
+make test
+````
+
 
 
 The API server will be up and running, ready to accept incoming requests.
