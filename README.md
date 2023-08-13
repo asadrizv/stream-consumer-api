@@ -9,7 +9,7 @@ To use the Stream Consumer API, follow these steps:
 1. Clone the repository to your local machine:
 
 ```
-git clone https://github.com/asadrizv/social-media-analyser
+git clone https://github.com/asadrizv/stream-consumer-api
 ```
 
 
