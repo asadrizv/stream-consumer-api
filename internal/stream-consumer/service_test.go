@@ -16,7 +16,7 @@ func TestStreamForDuration(t *testing.T) {
 
 		// Generate test SSE data
 		for i := 0; i < 10; i++ {
-			fmt.Fprintf(w, "data: {\"instagram_media\": {\"timestamp\": 123456.789, \"likes\": %d}}\n\n", i*10)
+			fmt.Fprintf(w, `data: {\"instagram_media\": {\"timestamp\": 123456.789, \"likes\": %d}}\n\n"`, 10)
 			w.(http.Flusher).Flush() // Flush the response to simulate streaming
 			time.Sleep(500 * time.Millisecond)
 		}
@@ -32,4 +32,5 @@ func TestStreamForDuration(t *testing.T) {
 	if err != nil {
 		t.Errorf("Unexpected error: %v", err)
 	}
+
 }
