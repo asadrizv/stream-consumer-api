@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	streamConsumer "social-media-analyser/internal/stream-consumer"
@@ -12,28 +13,24 @@ import (
 var streamer streamConsumer.StreamConsumerService
 
 func main() {
-	// Get the streaming URL and port from environment variables
 	streamingURL := os.Getenv("STREAMING_URL")
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8089" // Default port if not specified
+		port = "8089"
 	}
 
 	if streamingURL == "" {
-		fmt.Println("Please set the STREAMING_URL environment variable.")
-		return
+		log.Fatal("Please set the STREAMING_URL environment variable.")
 	}
 
-	// Configure the Stream Consumer service
 	streamer = streamConsumer.StreamConsumerService{StreamingURL: streamingURL}
 
-	// Set up the HTTP server
 	http.HandleFunc("/analysis", analysisHandler)
 	serverAddr := ":" + port
 	fmt.Printf("Server is listening on %s...\n", serverAddr)
 	err := http.ListenAndServe(serverAddr, nil)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 	}
 }
 
@@ -55,6 +52,7 @@ func analysisHandler(w http.ResponseWriter, r *http.Request) {
 	stats, err := streamer.StreamForDuration(duration, dimensionParam)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
 	}
 
 	response := AnalysisResponse{
@@ -68,7 +66,9 @@ func analysisHandler(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(response)
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Println("Error encoding JSON response:", err)
+	}
 }
 
 type AnalysisResponse struct {
