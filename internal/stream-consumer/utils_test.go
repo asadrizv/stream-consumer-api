@@ -24,7 +24,7 @@ func TestCalculatePercentile(t *testing.T) {
 }
 
 func TestCalculatePercentileEmpty(t *testing.T) {
-	emptyNumbers := []float64{}
+	var emptyNumbers []float64
 	result := calculatePercentile(emptyNumbers, 50)
 	if result != 0 {
 		t.Errorf("Expected result to be %f for empty slice, but got %f", 0.0, result)
