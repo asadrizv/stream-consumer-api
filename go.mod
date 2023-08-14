@@ -1,3 +1,3 @@
-module social-media-analyser
+module stream-consumer-api
 
 go 1.20
